@@ -1,27 +1,28 @@
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/model/user.models";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
 import { sendEmail } from "@/helpers/mailer";
-import jwt from "jsonwebtoken"
-connect()
+import jwt from "jsonwebtoken";
+
+connect();
 
 export async function GET(request: NextRequest) {
     try {
         const response = NextResponse.json(
             {
                 message: "User logout successfully",
-                succeess: true,
+                success: true,
             }
-        )
+        );
         response.cookies.set("token", "", {
             httpOnly: true,
             expires: new Date(0),
         });
 
-
-
+        // Return the response object
+        return response;
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
