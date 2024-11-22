@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
             expires: new Date(0),
         });
 
-        // Return the response object
+
         return response;
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
