@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import Link from "next/link";
 
 interface LoginProps {
     open: boolean;
@@ -91,6 +92,7 @@ const Login: React.FC<LoginProps> = ({ open, onOpenChange }) => {
                                 className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <button
+
                                 type="submit"
                                 className={`w-full p-3 text-white rounded-md ${buttonDisabled
                                     ? "bg-gray-400 cursor-not-allowed"
@@ -101,6 +103,8 @@ const Login: React.FC<LoginProps> = ({ open, onOpenChange }) => {
                                 {loading ? "Logging in..." : "Login"}
                             </button>
                         </form>
+
+
                         <Dialog.Close asChild>
                             <button className="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
                                 ✕
@@ -108,7 +112,7 @@ const Login: React.FC<LoginProps> = ({ open, onOpenChange }) => {
                         </Dialog.Close>
                     </Dialog.Content>
                 </Dialog.Portal>
-            </Dialog.Root>
+            </Dialog.Root >
         </>
     );
 };

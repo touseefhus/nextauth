@@ -9,9 +9,10 @@ import toast, { Toaster } from "react-hot-toast";
 interface RegisterProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    onLogiClick: () => void;
 }
 
-const Register: React.FC<RegisterProps> = ({ open, onOpenChange }) => {
+const Register: React.FC<RegisterProps> = ({ open, onOpenChange, onLogiClick }) => {
     const router = useRouter();
     const [user, setUser] = useState({
         name: "",
@@ -22,22 +23,18 @@ const Register: React.FC<RegisterProps> = ({ open, onOpenChange }) => {
     const [loading, setLoading] = useState(false);
 
     const onRegister = async (e: React.FormEvent) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         try {
             setLoading(true);
-            const response = await axios.post("/api/user/register", user);
+            await axios.post("/api/user/register", user);
 
-            // Show success toast
             toast.success("Registered successfully! Redirecting...");
-
-            // Clear form
             setUser({ name: "", email: "", password: "" });
 
-            // Close modal after short delay
             setTimeout(() => {
                 onOpenChange(false);
                 router.push("/");
-            }, 1500); // Redirect and close modal after 1.5s
+            }, 1500);
         } catch (error: any) {
             if (error.response?.status === 400) {
                 toast.error("User already exists! Please log in.");
@@ -52,26 +49,31 @@ const Register: React.FC<RegisterProps> = ({ open, onOpenChange }) => {
     };
 
     useEffect(() => {
-        if (user.name && user.email && user.password) {
-            setButtonDisabled(false);
-        } else {
-            setButtonDisabled(true);
-        }
+        setButtonDisabled(!user.name || !user.email || !user.password);
+    }, [user]);
+    useEffect(() => {
+        setButtonDisabled(!user.name || !user.email || !user.password);
     }, [user]);
 
     return (
         <>
-            {/* Toast notifications */}
             <Toaster position="top-center" reverseOrder={false} />
-
             <Dialog.Root open={open} onOpenChange={onOpenChange}>
                 <Dialog.Portal>
-                    <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-                    <Dialog.Content className="fixed top-1/2 left-1/2 w-[90%] max-w-md p-6 bg-white rounded-lg shadow-lg transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                    <Dialog.Overlay className="fixed inset-0 bg-black/50 z-40" />
+                    <Dialog.Content
+                        className="fixed top-1/2 left-1/2 w-[90%] max-w-md p-6 bg-white rounded-lg shadow-lg transform -translate-x-1/2 -translate-y-1/2 focus:outline-none z-50"
+                        aria-labelledby="dialog-title"
+                        aria-describedby="dialog-description"
+                    >
+                        {/* Visually Hidden Title for Screen Readers */}
                         <Dialog.Title className="text-xl font-semibold text-gray-800 mb-2">
                             Register
                         </Dialog.Title>
-                        <Dialog.Description className="text-gray-600 mb-4">
+                        <Dialog.Description
+                            id="dialog-description"
+                            className="text-gray-600 mb-4"
+                        >
                             Create an account to get started.
                         </Dialog.Description>
                         <form className="space-y-4" onSubmit={onRegister}>
@@ -107,8 +109,21 @@ const Register: React.FC<RegisterProps> = ({ open, onOpenChange }) => {
                                 {loading ? "Registering..." : "Register"}
                             </button>
                         </form>
+                        <p className="text-sm text-gray-600 mt-4">
+                            Already have an account?{" "}
+                            <button
+                                onClick={onLogiClick}
+                                className="text-blue-500 hover:underline"
+                                type="button"
+                            >
+                                Login here
+                            </button>
+                        </p>
                         <Dialog.Close asChild>
-                            <button className="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+                            <button
+                                className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+                                aria-label="Close"
+                            >
                                 ✕
                             </button>
                         </Dialog.Close>
