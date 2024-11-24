@@ -10,9 +10,10 @@ import Link from "next/link";
 interface LoginProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    onRegisterClick: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ open, onOpenChange }) => {
+const Login: React.FC<LoginProps> = ({ open, onOpenChange, onRegisterClick }) => {
     const router = useRouter();
     const [user, setUser] = useState({
         email: "",
@@ -92,7 +93,7 @@ const Login: React.FC<LoginProps> = ({ open, onOpenChange }) => {
                                 className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <button
-
+                                // onClick={onRegisterClick}
                                 type="submit"
                                 className={`w-full p-3 text-white rounded-md ${buttonDisabled
                                     ? "bg-gray-400 cursor-not-allowed"
@@ -103,7 +104,12 @@ const Login: React.FC<LoginProps> = ({ open, onOpenChange }) => {
                                 {loading ? "Logging in..." : "Login"}
                             </button>
                         </form>
-
+                        <p className="text-sm text-gray-600 mt-4">
+                            Don't have an account?{" "}
+                            <button onClick={onRegisterClick} className="text-blue-500 text-right hover:underline">
+                                Register here
+                            </button>
+                        </p>
 
                         <Dialog.Close asChild>
                             <button className="absolute top-3 right-3 text-gray-400 hover:text-gray-600">

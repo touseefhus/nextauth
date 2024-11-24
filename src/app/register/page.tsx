@@ -9,10 +9,10 @@ import toast, { Toaster } from "react-hot-toast";
 interface RegisterProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onLogiClick: () => void;
+    // onLogiClick: () => void;
 }
 
-const Register: React.FC<RegisterProps> = ({ open, onOpenChange, onLogiClick }) => {
+const Register: React.FC<RegisterProps> = ({ open, onOpenChange, }) => {
     const router = useRouter();
     const [user, setUser] = useState({
         name: "",
@@ -109,16 +109,16 @@ const Register: React.FC<RegisterProps> = ({ open, onOpenChange, onLogiClick }) 
                                 {loading ? "Registering..." : "Register"}
                             </button>
                         </form>
-                        <p className="text-sm text-gray-600 mt-4">
+                        {/* <p className="text-sm text-gray-600 mt-4">
                             Already have an account?{" "}
                             <button
-                                onClick={onLogiClick}
+                                // onClick={onLogiClick}
                                 className="text-blue-500 hover:underline"
                                 type="button"
                             >
                                 Login here
                             </button>
-                        </p>
+                        </p> */}
                         <Dialog.Close asChild>
                             <button
                                 className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
