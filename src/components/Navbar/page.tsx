@@ -6,10 +6,12 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import Register from "@/app/register/page";
 import Login from "@/app/login/page";
+
 const Navbar: React.FC = () => {
     const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
     const [isRegisterOpen, setIsRegisterOpen] = useState<boolean>(false);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // Track login state
 
     const openRegister = () => {
         setIsLoginOpen(false);
@@ -18,6 +20,15 @@ const Navbar: React.FC = () => {
 
     const toggleMenu = () => {
         setIsMenuOpen((prev) => !prev);
+    };
+
+    const handleLoginSuccess = () => {
+        setIsLoggedIn(true); // Set user as logged in
+        setIsLoginOpen(false); // Close login modal
+    };
+
+    const handleLogout = () => {
+        setIsLoggedIn(false); // Set user as logged out
     };
 
     return (
@@ -38,7 +49,12 @@ const Navbar: React.FC = () => {
                     <Link href="/pages/article" className="text-gray-800 hover:text-blue-500">
                         Article
                     </Link>
-                    <Button onClick={() => setIsLoginOpen(true)}>Login</Button>
+                    {/* Conditionally render Profile or Login */}
+                    {isLoggedIn ? (
+                        <Button onClick={handleLogout}>Logout</Button>
+                    ) : (
+                        <Button onClick={() => setIsLoginOpen(true)}>Login</Button>
+                    )}
                 </div>
 
                 {/* Mobile Toggle Button */}
@@ -103,15 +119,14 @@ const Navbar: React.FC = () => {
                 </div>
             )}
 
-
             {isLoginOpen && (
                 <Login
                     open={isLoginOpen}
                     onOpenChange={setIsLoginOpen}
                     onRegisterClick={openRegister}
+                    onLoginSuccess={handleLoginSuccess} // Handle login success
                 />
             )}
-
 
             {isRegisterOpen && (
                 <Register open={isRegisterOpen} onOpenChange={setIsRegisterOpen} />

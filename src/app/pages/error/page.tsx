@@ -1,25 +1,50 @@
-"use client"
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import Login from "@/app/login/page"; // Assuming this is your Login component
+import Register from "@/app/register/page"; // Assuming you have a Register component
+import { Button } from "@/components/ui/button";
 
 const Page = () => {
+    const [activeModal, setActiveModal] = useState<"login" | "register" | null>(null);
+
+    const handleLoginClick = () => {
+        setActiveModal("login"); // Open the login modal
+    };
+
+    const handleRegisterClick = () => {
+        setActiveModal("register"); // Open the register modal
+    };
+
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-            <div className="text-center bg-white p-8 rounded-lg shadow-lg max-w-md">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="text-center bg-white p-8 rounded-lg shadow-lg shadow-gray-300 max-w-md">
                 <h1 className="text-2xl font-bold text-gray-800 mb-4">
                     🚪 Access Denied!
                 </h1>
                 <p className="text-gray-600 mb-6">
                     You need to log in first to access this page. Please log in to continue.
                 </p>
-                <button
-                    onClick={() => {
-                        window.location.href = "/";
-                    }}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-md text-lg hover:bg-blue-700 transition-all"
-                >
-                    Home
-                </button>
+                <div className="flex justify-center space-x-4">
+                    <Button onClick={handleLoginClick}>Login</Button>
+                </div>
             </div>
+
+            {/* Modal Logic */}
+            {activeModal === "login" && (
+                <Login
+                    open={true}
+                    onOpenChange={(open) => open ? setActiveModal("login") : setActiveModal(null)}
+                    onRegisterClick={handleRegisterClick} // Open register modal
+                />
+            )}
+
+            {activeModal === "register" && (
+                <Register
+                    open={true}
+                    onOpenChange={(open) => open ? setActiveModal("register") : setActiveModal(null)}
+                // onLoginClick={handleLoginClick} // Open login modal
+                />
+            )}
         </div>
     );
 };
