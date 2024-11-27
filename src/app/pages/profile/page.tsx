@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function ProfilePage() {
     const router = useRouter();
@@ -31,7 +32,7 @@ export default function ProfilePage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center p-6">
+        <div className="min-h-screen from-blue-100  shadow-gray-400 flex items-center justify-center p-6">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
                 <h1 className="text-2xl font-bold text-gray-800 text-center">Profile Page</h1>
                 <hr className="my-4" />
@@ -46,18 +47,12 @@ export default function ProfilePage() {
                 </h2>
                 <hr className="my-4" />
                 <div className="flex flex-col space-y-4">
-                    <button
-                        onClick={logout}
-                        className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200"
-                    >
+                    <Button onClick={logout}>
                         Logout
-                    </button>
-                    <button
-                        onClick={userDetails}
-                        className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
-                    >
-                        Get User Details
-                    </button>
+                    </Button>
+                    <Button onClick={userDetails} className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
+                        Get user ID
+                    </Button>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import Link from "next/link";
+
 
 interface LoginProps {
     open: boolean;
@@ -28,8 +28,9 @@ const Login: React.FC<LoginProps> = ({ open, onOpenChange, onRegisterClick }) =>
             setLoading(true);
             const response = await axios.post("/api/user/login", user);
 
-            // Show success toast
-            toast.success("Login successful! Redirecting...");
+            if (response.status === 200) {
+                toast.success("Login Successfully");
+            }
 
             // Clear form
             setUser({ email: "", password: "" });
@@ -40,17 +41,22 @@ const Login: React.FC<LoginProps> = ({ open, onOpenChange, onRegisterClick }) =>
                 router.push("/pages/article"); // Redirect to dashboard or homepage
             }, 1500);
         } catch (error: any) {
-            if (error.response?.status === 400) {
-                toast.error("Invalid email or password. Please try again.");
+
+            if (error.response) {
+                const errorMessage = error.response.data.error || 'An error occurred. Please try again';
+                toast.error(errorMessage);
+            } else if (error.request) {
+
+                toast.error('Network error. Please try again later.');
             } else {
-                toast.error(
-                    error.response?.data?.message || "Login failed. Please try again."
-                );
+
+                toast.error('An unexpected error occurred.');
             }
         } finally {
             setLoading(false);
         }
     };
+
 
     useEffect(() => {
         if (user.email && user.password) {

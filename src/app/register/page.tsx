@@ -109,16 +109,12 @@ const Register: React.FC<RegisterProps> = ({ open, onOpenChange, }) => {
                                 {loading ? "Registering..." : "Register"}
                             </button>
                         </form>
-                        {/* <p className="text-sm text-gray-600 mt-4">
-                            Already have an account?{" "}
-                            <button
-                                // onClick={onLogiClick}
-                                className="text-blue-500 hover:underline"
-                                type="button"
-                            >
+                        <p className="text-sm text-gray-600 mt-4">
+                            have an account?{" "}
+                            <button className="text-blue-500 text-right hover:underline">
                                 Login here
                             </button>
-                        </p> */}
+                        </p>
                         <Dialog.Close asChild>
                             <button
                                 className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
