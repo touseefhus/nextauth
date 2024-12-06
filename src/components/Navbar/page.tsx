@@ -124,7 +124,7 @@ const Navbar: React.FC = () => {
                     open={isLoginOpen}
                     onOpenChange={setIsLoginOpen}
                     onRegisterClick={openRegister}
-                    onLoginSuccess={handleLoginSuccess} // Handle login success
+                    onLoginSuccess={handleLoginSuccess}
                 />
             )}
 

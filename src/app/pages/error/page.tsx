@@ -1,18 +1,18 @@
 "use client";
 import React, { useState } from "react";
-import Login from "@/app/login/page"; // Assuming this is your Login component
-import Register from "@/app/register/page"; // Assuming you have a Register component
+import Login from "@/app/login/page";
+import Register from "@/app/register/page";
 import { Button } from "@/components/ui/button";
 
 const Page = () => {
     const [activeModal, setActiveModal] = useState<"login" | "register" | null>(null);
 
     const handleLoginClick = () => {
-        setActiveModal("login"); // Open the login modal
+        setActiveModal("login");
     };
 
     const handleRegisterClick = () => {
-        setActiveModal("register"); // Open the register modal
+        setActiveModal("register");
     };
 
     return (
@@ -34,7 +34,7 @@ const Page = () => {
                 <Login
                     open={true}
                     onOpenChange={(open) => open ? setActiveModal("login") : setActiveModal(null)}
-                    onRegisterClick={handleRegisterClick} // Open register modal
+                    onRegisterClick={handleRegisterClick}
                 />
             )}
 
@@ -42,7 +42,6 @@ const Page = () => {
                 <Register
                     open={true}
                     onOpenChange={(open) => open ? setActiveModal("register") : setActiveModal(null)}
-                // onLoginClick={handleLoginClick} // Open login modal
                 />
             )}
         </div>

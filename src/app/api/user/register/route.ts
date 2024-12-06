@@ -9,9 +9,9 @@ connect()
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json()
-        const { name, email, password } = reqBody
+        const { name, email, password, role } = reqBody
         console.log(reqBody);
-
+        const userRole = role || "user";
         //if user already exist
 
         const user = await User.findOne({ email })
@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
         const newUser = new User({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            role: userRole
         })
 
         // save the new user
