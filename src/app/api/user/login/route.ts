@@ -2,7 +2,6 @@ import { connect } from "@/dbConfig/dbConfig";
 import User from "@/model/user.models";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { sendEmail } from "@/helpers/mailer";
 import jwt from "jsonwebtoken";
 
 connect();
@@ -48,7 +47,11 @@ export async function POST(request: NextRequest) {
         });
 
         return response;
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        } else {
+            return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+        }
     }
 }

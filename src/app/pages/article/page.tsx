@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { fetchArticles } from "@/helpers/apiFetcher";
-
 const Page = () => {
   const [articles, setArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

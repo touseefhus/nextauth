@@ -32,6 +32,7 @@ const Page = () => {
             {/* Modal Logic */}
             {activeModal === "login" && (
                 <Login
+                    onLoginSuccess={open}
                     open={true}
                     onOpenChange={(open) => open ? setActiveModal("login") : setActiveModal(null)}
                     onRegisterClick={handleRegisterClick}
