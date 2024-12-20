@@ -1,17 +1,18 @@
 "use client";
 
-import * as Dialog from "@radix-ui/react-dialog";
 import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import Register from "@/app/register/page";
 import Login from "@/app/login/page";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { BsCart3 } from "react-icons/bs";
 
 const Navbar: React.FC = () => {
     const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
     const [isRegisterOpen, setIsRegisterOpen] = useState<boolean>(false);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // Track login state
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     const openRegister = () => {
         setIsLoginOpen(false);
@@ -23,8 +24,9 @@ const Navbar: React.FC = () => {
     };
 
     const handleLoginSuccess = () => {
-        setIsLoggedIn(true); // Set user as logged in
-        setIsLoginOpen(false); // Close login modal
+        setIsLoggedIn(true);
+        setIsLoginOpen(false);
+        setIsMenuOpen(false);
     };
 
     const handleLogout = () => {
@@ -32,28 +34,34 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <nav className="bg-white shadow-lg">
-            <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                <div className="text-2xl font-bold text-gray-800">
-                    <Link href="/">MyWebsite</Link>
+        <nav id="nav-bar" className="bg-transparent">
+            <div className="container fixed-top mx-auto px-4 py-4 flex justify-between items-center">
+                {/* Logo */}
+                <div className="font-bold text-gray-800 text-3xl">
+                    <Link href="/">Get<span style={{ color: "#F95919" }}>Unity</span>Codes</Link>
                 </div>
 
                 {/* Desktop Links */}
-                <div className="hidden md:flex items-center space-x-6">
+                <div id="nav-link" className="hidden md:flex items-center space-x-6">
                     <Link href="/" className="text-gray-800 hover:text-blue-500">
                         Home
                     </Link>
-                    <Link href="/pages/about" className="text-gray-800 hover:text-blue-500">
-                        About
+                    <Link href="/pages/games/mobilegames" className="text-gray-800 hover:text-blue-500">
+                        Mobile Games
+                    </Link>
+                    <Link href="/pages/games/pcgames" className="text-gray-800 hover:text-blue-500">
+                        Pc Games
                     </Link>
                     <Link href="/pages/article" className="text-gray-800 hover:text-blue-500">
                         Article
                     </Link>
-                    {/* Conditionally render Profile or Login */}
+                    <span><MdOutlineFavoriteBorder /></span>
+                    <span> <BsCart3 /></span>
+                    {/* Conditionally render Login or Logout */}
                     {isLoggedIn ? (
                         <Button onClick={handleLogout}>Logout</Button>
                     ) : (
-                        <Button onClick={() => setIsLoginOpen(true)}>Login</Button>
+                        <Button onClick={() => setIsLoginOpen(true)}>Get Started</Button>
                     )}
                 </div>
 
@@ -84,41 +92,56 @@ const Navbar: React.FC = () => {
             {/* Mobile Menu */}
             {isMenuOpen && (
                 <div className="md:hidden bg-white shadow-lg">
-                    <div className="px-4 py-2">
+                    <div className="px-4 py-2 flex flex-col space-y-2">
                         <Link
                             href="/"
-                            className="block text-gray-800 hover:text-blue-500 py-2"
-                            onClick={() => setIsMenuOpen(false)}
+                            className="text-gray-800 hover:text-blue-500"
+                            onClick={() => setIsMenuOpen(false)} // Close menu on click
                         >
                             Home
                         </Link>
                         <Link
                             href="/pages/about"
-                            className="block text-gray-800 hover:text-blue-500 py-2"
-                            onClick={() => setIsMenuOpen(false)}
+                            className="text-gray-800 hover:text-blue-500"
+                            onClick={() => setIsMenuOpen(false)} // Close menu on click
                         >
                             About
                         </Link>
                         <Link
                             href="/pages/article"
-                            className="block text-gray-800 hover:text-blue-500 py-2"
-                            onClick={() => setIsMenuOpen(false)}
+                            className="text-gray-800 hover:text-blue-500"
+                            onClick={() => setIsMenuOpen(false)} // Close menu on click
                         >
                             Article
                         </Link>
-                        <button
-                            onClick={() => {
-                                setIsMenuOpen(false); // Close menu
-                                setIsLoginOpen(true); // Open Login modal
-                            }}
-                            className="w-full text-left text-gray-800 hover:text-blue-500 py-2"
-                        >
-                            Login
-                        </button>
+                        {/* Login Button */}
+                        {!isLoggedIn && (
+                            <button
+                                onClick={() => {
+                                    setIsMenuOpen(false); // Close menu
+                                    setIsLoginOpen(true); // Open Login modal
+                                }}
+                                className="text-gray-800 hover:text-blue-500 text-left"
+                            >
+                                Login
+                            </button>
+                        )}
+                        {isLoggedIn && (
+                            <button
+                                onClick={() => {
+                                    setIsMenuOpen(false); // Close menu
+                                    handleLogout();
+                                }}
+                                className="text-gray-800 hover:text-blue-500 text-left"
+                            >
+                                Logout
+                            </button>
+                        )}
                     </div>
                 </div>
             )}
 
+            {/* Modals */}
             {isLoginOpen && (
                 <Login
                     open={isLoginOpen}
@@ -127,7 +150,6 @@ const Navbar: React.FC = () => {
                     onLoginSuccess={handleLoginSuccess}
                 />
             )}
-
             {isRegisterOpen && (
                 <Register open={isRegisterOpen} onOpenChange={setIsRegisterOpen} />
             )}

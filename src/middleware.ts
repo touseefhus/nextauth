@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { jwtVerify } from 'jose';
+import { jwtVerify, JWTPayload } from 'jose';
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get('token')?.value;
@@ -12,9 +12,7 @@ export async function middleware(req: NextRequest) {
   try {
     // Verify JWT using jose
     const secret = new TextEncoder().encode(process.env.TOKEN_SECRET);
-    const { payload } = await jwtVerify(token, secret);
-
-
+    const { payload } = await jwtVerify(token, secret) as { payload: JWTPayload & { role?: string } };
 
     // Role-based protection
     const urlPath = req.nextUrl.pathname;
@@ -27,8 +25,12 @@ export async function middleware(req: NextRequest) {
     // Allow access if the role is admin or the path is not '/pages/dashboard'
     return NextResponse.next();
 
-  } catch (error: any) {
-    console.error("Token verification failed:", error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Token verification failed:", error.message);
+    } else {
+      console.error("Unexpected error occurred during token verification");
+    }
     return NextResponse.redirect(new URL('/pages/error', req.url));
   }
 }

@@ -15,8 +15,12 @@ export default function ProfilePage() {
             const response = await axios.post("/api/user/profile");
             console.log(response.data);
             setData(response.data.data._id);
-        } catch (error: any) {
-            console.log(error.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.log(error.message);
+            } else {
+                console.log("An unknown error occurred.");
+            }
         }
     };
 
@@ -26,13 +30,17 @@ export default function ProfilePage() {
             console.log(response.data);
             toast.success("User logged out successfully");
             router.push("/");
-        } catch (error: any) {
-            console.log(error.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.log(error.message);
+            } else {
+                console.log("An unknown error occurred.");
+            }
         }
     };
 
     return (
-        <div className="min-h-screen from-blue-100  shadow-gray-400 flex items-center justify-center p-6">
+        <div className="min-h-screen from-blue-100 shadow-gray-400 flex items-center justify-center p-6">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
                 <h1 className="text-2xl font-bold text-gray-800 text-center">Profile Page</h1>
                 <hr className="my-4" />
@@ -50,7 +58,10 @@ export default function ProfilePage() {
                     <Button onClick={logout}>
                         Logout
                     </Button>
-                    <Button onClick={userDetails} className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
+                    <Button
+                        onClick={userDetails}
+                        className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+                    >
                         Get user ID
                     </Button>
                 </div>
