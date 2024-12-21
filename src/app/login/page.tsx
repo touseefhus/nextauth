@@ -10,7 +10,7 @@ interface LoginProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onRegisterClick: () => void;
-    onLoginSuccess?: () => void; // Optional if not always needed
+    onLoginSuccess?: () => void;
 }
 
 const Login: React.FC<LoginProps> = ({ open, onOpenChange, onRegisterClick }) => {
